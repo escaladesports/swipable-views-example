@@ -32,20 +32,7 @@ export default class extends React.Component {
 				<SwipeableViews index={this.state.index} onChangeIndex={this.changeSlide}>
 					{
 						slides.map((slide, index) => {
-							const classes = [ 'slide' ]
-							if(!index){
-								classes.push('first')
-							}
-							if(index === slides.length - 1){
-								classes.push('last')
-							}
-							if(this.state.index - 1 === index){
-								classes.push('previous')
-							}
-							if(this.state.index + 1 === index){
-								classes.push('next')
-							}
-							return <div key={`slide${index}`} className={classes.join(' ')}>
+							return <div key={`slide${index}`} className='slide'>
 								{slide}
 							</div>
 						})
