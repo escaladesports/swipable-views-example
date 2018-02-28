@@ -1,6 +1,13 @@
 import React from 'react'
 import SwipeableViews from 'react-swipeable-views'
 
+const slides = [
+	<div><img src='http://via.placeholder.com/350x150' /></div>,
+	<div><img src='http://via.placeholder.com/350x150' /></div>,
+	<div><img src='http://via.placeholder.com/350x150' /></div>,
+	<div><img src='http://via.placeholder.com/350x150' /></div>,
+]
+
 export default class extends React.Component {
 	constructor(props){
 		super(props)
@@ -23,35 +30,42 @@ export default class extends React.Component {
 		return (
 			<div>
 				<SwipeableViews index={this.state.index} onChangeIndex={this.changeSlide}>
-					<div className='slide slide1'>
-						slide n°1
-					</div>
-					<div className='slide slide2'>
-						slide n°2
-					</div>
-					<div className='slide slide3'>
-						slide n°3
-					</div>
+					{
+						slides.map((slide, index) => {
+							const classes = [ 'slide' ]
+							if(!index){
+								classes.push('first')
+							}
+							if(index === slides.length - 1){
+								classes.push('last')
+							}
+							if(this.state.index - 1 === index){
+								classes.push('previous')
+							}
+							if(this.state.index + 1 === index){
+								classes.push('next')
+							}
+							return <div key={`slide${index}`} className={classes.join(' ')}>
+								{slide}
+							</div>
+						})
+					}
 				</SwipeableViews>
 				<div className='dots'>
-					<div className={this.activeClass(0)} onClick={() => this.changeSlide(0)} />
-					<div className={this.activeClass(1)} onClick={() => this.changeSlide(1)} />
-					<div className={this.activeClass(2)} onClick={() => this.changeSlide(2)} />
+					{
+						slides.map((slide, index) => {
+							return <div
+								key={`slideDots${index}`}
+								className={this.activeClass(index)}
+								onClick={() => this.changeSlide(index)}
+								/>
+						})
+					}
 				</div>
 				<style jsx>{`
 					.slide{
 						padding: 15px;
-						min-height: 100px;
-						color: #fff;
-					}
-					.slide1{
-						background: #FEA900;
-					}
-					.slide2{
-						background: #B3DC4A;
-					}
-					.slide3{
-						background: #6AC0FF;
+						border: 1px solid #333;
 					}
 
 					.dots{
