@@ -29,6 +29,7 @@
     "react-dom": "^16.1.1"
   },
   "dependencies": {
+    "react-swipeable-views": "^0.12.13",
     "styled-jsx": "^2.2.4"
   }
 }

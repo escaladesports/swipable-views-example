@@ -1,78 +1,75 @@
 import React from 'react'
+import SwipeableViews from 'react-swipeable-views'
 
 export default class extends React.Component {
 	constructor(props){
 		super(props)
-		this.state = { loading: false }
-		this.hideLoader = this.hideLoader.bind(this)
-		this.showLoader = this.showLoader.bind(this)
-		this.startTimeout = this.startTimeout.bind(this)
-	}
-	componentWillReceiveProps() {
-		this.startTimeout()
-	}
-	componentDidMount() {
-		if (this.img.complete) {
-			this.hideLoader()
+		this.state = {
+			index: 0
 		}
-		else {
-			this.startTimeout()
+		this.changeSlide = this.changeSlide.bind(this)
+		this.activeClass = this.activeClass.bind(this)
+	}
+	changeSlide(index){
+		this.setState({ index })
+	}
+	activeClass(n){
+		if(this.state.index === n){
+			return 'active'
 		}
-	}
-	startTimeout() {
-		clearTimeout(this.timeout)
-		this.timeout = setTimeout(this.showLoader, 100)
-	}
-	showLoader() {
-		if (!this.img.complete) {
-			this.setState({ loading: true })
-		}
-	}
-	hideLoader() {
-		clearTimeout(this.timeout)
-		this.setState({ loading: false })
+		return ''
 	}
 	render(){
-		const TagName = this.props.tagName || 'img'
 		return (
-			<div style={{
-				maxWidth: this.props.width,
-				maxHeight: this.props.height,
-				margin: this.props.center ? 'auto' : ''
-			}}>
-				<div style={{
-					position: 'relative',
-					paddingBottom: `${(this.props.height / this.props.width) * 100}%`
-				}}>
-					<TagName
-						type={this.props.type}
-						srcSet={this.props.srcSet}
-						sizes={this.props.sizes}
-						src={this.props.src}
-						ref={img => this.img = img}
-						onLoad={this.hideLoader}
-						onError={this.hideLoader}
-						alt={this.props.alt}
-						style={{
-							position: 'absolute',
-							width: '100%',
-							maxWidth: '100%',
-							top: 0,
-							left: 0,
-							display: this.state.loading ? 'none' : 'block'
-						}}
-					/>
-					{this.state.loading && this.props.loading &&
-						<div style={{
-								position: 'absolute',
-								top: '50%',
-								left: '50%',
-								transform: 'translate(-50%, -50%)'
-						}}>
-							{this.props.loading}
-						</div>
-					}
+			<div>
+				<SwipeableViews index={this.state.index} onChangeIndex={this.changeSlide}>
+					<div className='slide slide1'>
+						slide n°1
+					</div>
+					<div className='slide slide2'>
+						slide n°2
+					</div>
+					<div className='slide slide3'>
+						slide n°3
+					</div>
+				</SwipeableViews>
+				<div className='dots'>
+					<div className={this.activeClass(0)} onClick={() => this.changeSlide(0)} />
+					<div className={this.activeClass(1)} onClick={() => this.changeSlide(1)} />
+					<div className={this.activeClass(2)} onClick={() => this.changeSlide(2)} />
 				</div>
+				<style jsx>{`
+					.slide{
+						padding: 15px;
+						min-height: 100px;
+						color: #fff;
+					}
+					.slide1{
+						background: #FEA900;
+					}
+					.slide2{
+						background: #B3DC4A;
+					}
+					.slide3{
+						background: #6AC0FF;
+					}
+
+					.dots{
+						text-align: center;
+						div{
+							width: 13px;
+							height: 13px;
+							border: 1px solid #333;
+							display: inline-block;
+							border-radius: 100%;
+							cursor: pointer;
+							margin: 5px;
+						}
+					}
+					.active{
+						background: #333;
+					}
+				`}</style>
 			</div>
 		)
 	}
