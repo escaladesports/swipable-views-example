@@ -30,24 +30,20 @@ export default class extends React.Component {
 		return (
 			<div>
 				<SwipeableViews index={this.state.index} onChangeIndex={this.changeSlide}>
-					{
-						slides.map((slide, index) => {
-							return <div key={`slide${index}`} className='slide'>
-								{slide}
-							</div>
-						})
-					}
+					{slides.map((slide, index) => (
+						<div key={`slide${index}`} className='slide'>
+							{slide}
+						</div>
+					))}
 				</SwipeableViews>
 				<div className='dots'>
-					{
-						slides.map((slide, index) => {
-							return <div
-								key={`slideDots${index}`}
-								className={this.activeClass(index)}
-								onClick={() => this.changeSlide(index)}
-								/>
-						})
-					}
+					{slides.map((slide, index) => (
+						<div
+							key={`slideDots${index}`}
+							className={this.activeClass(index)}
+							onClick={() => this.changeSlide(index)}
+						/>
+					))}
 				</div>
 				<style jsx>{`
 					.slide{
